@@ -14,7 +14,7 @@ public class TaskController {
         this.taskRepository = taskRepository;
     }
 
-    public void addTask(String id, String title, String description, Boolean completed) throws TaskValidationException{
+    public void addTask(String id, String title, String description, Boolean completed) throws TaskValidationException, TaskException {
         validateTaskData(id, title, description, completed);
 
         Task task = new Task(id, title, description, completed);
@@ -22,7 +22,7 @@ public class TaskController {
         System.out.println("Task added successfully");
     }
 
-    public void removeTask(String id) throws TaskValidationException {
+    public void removeTask(String id) throws TaskValidationException, TaskException {
         if(id == null || id.trim().isEmpty()) {
             throw new TaskValidationException("Id could not be null");
         }
@@ -30,7 +30,7 @@ public class TaskController {
         this.taskRepository.remove(id);
     }
 
-    public void showTasks() throws TaskValidationException {
+    public void showTasks() throws TaskValidationException, TaskException {
         List<Task> tasks = this.taskRepository.findAll();
         if(tasks.isEmpty()) {
             throw new TaskValidationException("Tasks array is empty");
@@ -41,7 +41,7 @@ public class TaskController {
         }
     }
 
-    public void updateTask(String id, String title, String description, Boolean completed) throws TaskValidationException {
+    public void updateTask(String id, String title, String description, Boolean completed) throws TaskValidationException, TaskException {
         validateTaskData(id, title, description, completed);
 
         Task updatedTask = new Task(id, title, description, completed);
