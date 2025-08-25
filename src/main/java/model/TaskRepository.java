@@ -1,18 +1,24 @@
 package model;
 
 import exceptions.TaskException;
+import persistence.TaskPersistence;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository {
-    List<Task> tasks = new ArrayList<>();
+    List<Task> tasks;
+
+    public TaskRepository() {
+        this.tasks = TaskPersistence.loadTasks();
+    }
 
     public void save(Task task) throws TaskException {
         if(task == null) {
             throw new TaskException("Task could not be null");
         }
         tasks.add(task);
+        TaskPersistence.saveTasks(tasks);
     }
 
     public Task findById(String id){
@@ -30,6 +36,7 @@ public class TaskRepository {
             throw new TaskException("Task could not be null");
         }
         tasks.remove(task);
+        TaskPersistence.saveTasks(tasks);
     }
     public void remove(Task task) throws TaskException {
         if(task == null) {
@@ -39,6 +46,7 @@ public class TaskRepository {
             throw new TaskException("Task does not exist in the list");
         }
         tasks.remove(task);
+        TaskPersistence.saveTasks(tasks);
     }
 
     public List<Task> findAll() throws TaskException {
@@ -66,5 +74,6 @@ public class TaskRepository {
             throw new TaskException("Invalid index");
         }
         tasks.set(index, updatedTask);
+        TaskPersistence.saveTasks(tasks);
     }
 }
