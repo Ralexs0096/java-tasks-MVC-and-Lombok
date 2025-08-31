@@ -23,7 +23,10 @@ public class TaskView {
             System.out.println("2. Delete task");
             System.out.println("3. Update task");
             System.out.println("4. Show task");
-            System.out.println("5. Exit");
+            System.out.println("5. Update task state");
+            System.out.println("6. Show Completed Tasks");
+            System.out.println("7. Show Pending Tasks");
+            System.out.println("8. Exit");
 
             String option = scanner.nextLine();
             switch (option) {
@@ -40,6 +43,15 @@ public class TaskView {
                     showTaskView();
                     break;
                 case "5":
+                    updateTaskCompletedView();
+                    break;
+                case "6":
+                    showCompletedTasksView();
+                    break;
+                case "7":
+                    showPendingTasksView();
+                    break;
+                case "8":
                     System.out.println("Finishing the program execution...");
                     return;
                 default:
@@ -99,6 +111,55 @@ public class TaskView {
         } catch (Exception e) {
             System.out.println("Unexpected error");
             e.printStackTrace();
+        }
+    }
+
+    public void updateTaskCompletedView() {
+        try {
+            System.out.println("Insert the id of the task you want to update: ");
+            String id = scanner.nextLine();
+
+            Boolean completed = null;
+            while (completed == null) {
+                System.out.println("Is the task completed? true/false");
+                String input = scanner.nextLine().trim().toLowerCase();
+
+                if(input.equals("true")) {
+                    completed = true;
+                }
+
+                if(input.equals("false")) {
+                    completed = false;
+                }
+
+                System.out.println("Please enter a valid option: true or false");
+            };
+
+            taskController.updateTaskCompleted(id, completed);
+            System.out.println("Task updated");
+        } catch (TaskValidationException | TaskException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Unexpected error");
+            e.printStackTrace();
+        }
+    }
+
+    public void showCompletedTasksView(){
+        try {
+            System.out.println("Completed Tasks");
+            taskController.showCompletedTasks();
+        } catch (TaskValidationException | TaskException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void showPendingTasksView(){
+        try {
+            System.out.println("Pending Tasks");
+            taskController.showPendingTasks();
+        } catch (TaskValidationException | TaskException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
