@@ -14,6 +14,9 @@ public class TaskRepository {
     }
 
     public void save(Task task) throws TaskException {
+        if(tasks.contains(task)) {
+            throw new TaskException("Task already exist");
+        }
         if(task == null) {
             throw new TaskException("Task could not be null");
         }
