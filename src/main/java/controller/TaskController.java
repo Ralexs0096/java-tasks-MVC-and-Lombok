@@ -40,6 +40,21 @@ public class TaskController {
             System.out.println(task);
         }
     }
+    public void showCompletedTasks() throws TaskValidationException, TaskException {
+        List<Task> completedTasks = this.taskRepository.findCompletedTasks();
+
+        for (Task task: completedTasks) {
+            System.out.println(task);
+        }
+    }
+
+    public void showPendingTasks() throws TaskValidationException, TaskException {
+        List<Task> pendingTasks = this.taskRepository.findPendingTasks();
+
+        for (Task task: pendingTasks) {
+            System.out.println(task);
+        }
+    }
 
     public void updateTask(String id, String title, String description, Boolean completed) throws TaskValidationException, TaskException {
         validateTaskData(id, title, description, completed);
@@ -48,6 +63,14 @@ public class TaskController {
 
         this.taskRepository.updateTask(updatedTask);
     }
+
+    public void updateTaskCompleted(String id, Boolean completed) throws TaskValidationException, TaskException {
+        validateTaskData(id, completed);
+
+        this.taskRepository.updateTaskCompleted(id, completed);
+    }
+
+
 
     private void validateTaskData(String id, String title, String description, Boolean completed) throws TaskValidationException {
         if(id == null || id.trim().isEmpty()) {
@@ -66,4 +89,14 @@ public class TaskController {
             throw new TaskValidationException("Title could not be null");
         }
     }
+    private void validateTaskData(String id, Boolean completed) throws TaskValidationException {
+        if(id == null || id.trim().isEmpty()) {
+            throw new TaskValidationException("Id could not be null");
+        }
+
+        if(completed == null ) {
+            throw new TaskValidationException("Title could not be null");
+        }
+    }
+
 }
